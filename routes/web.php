@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,16 +17,10 @@ Route::get('/table', function(){
     $barang = ['Meja', 'Kursi', 'Lampu', 'Papan Tulis'];
 });
 
-Route::get('/laravel-news', function () {
-    return view('index');
+Route::middleware(['checkUsers'])->group(function () {
+    Route::resource('posts', PostController::class);
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
+Auth::routes();
 
-Route::get('/register', function () {
-    return view('auth.register');
-});
-
-Route::resource('posts', PostController::class);
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
